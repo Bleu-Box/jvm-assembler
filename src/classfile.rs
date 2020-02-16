@@ -91,6 +91,11 @@ pub enum Instruction {
     Iconst3,            // 0x06
     Iconst4,            // 0x07
     Iconst5,            // 0x08
+    Istore0,            // 0x3b
+    Istore1,            // 0x3c
+    Istore2,            // 0x3d
+    Istore3,            // 0x3e
+    Istore(u8),         // 0x36
     Bipush(u8),         // 0x10
     LoadConstant(u8),   // 0x12
     Aload0,             // 0x2A
@@ -151,7 +156,8 @@ impl Classfile {
 }
 
 impl Method {
-    pub fn new(access_flags: u16, name_index: u16, descriptor_index: u16, attributes: Vec<Attribute>) -> Method {
+    pub fn new(access_flags: u16, name_index: u16, descriptor_index: u16,
+               attributes: Vec<Attribute>) -> Method {
         Method {
             access_flags: access_flags,
             name_index: name_index,
@@ -171,6 +177,11 @@ impl Instruction {
             Instruction::Iconst3 => 1,
             Instruction::Iconst4 => 1,
             Instruction::Iconst5 => 1,
+            Instruction::Istore0 => 1,
+            Instruction::Istore1 => 1,
+            Instruction::Istore2 => 1,
+            Instruction::Istore3 => 1,
+            Instruction::Istore(_) => 2,
             Instruction::Bipush(_) => 2,
             Instruction::LoadConstant(_) => 2,
             Instruction::Aload0 => 1,

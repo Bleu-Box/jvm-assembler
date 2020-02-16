@@ -651,6 +651,22 @@ impl Serializable for Instruction {
             Instruction::Iconst5 => {
                 (0x8 as u8).serialize(buf);
             },
+            Instruction::Istore0 => {
+                (0x3b as u8).serialize(buf);
+            },
+            Instruction::Istore1 => {
+                (0x3c as u8).serialize(buf);
+            },
+            Instruction::Istore2 => {
+                (0x3d as u8).serialize(buf);
+            },
+            Instruction::Istore3 => {
+                (0x3e as u8).serialize(buf);
+            },
+            Instruction::Istore(idx) => {
+                (0x36 as u8).serialize(buf);
+                idx.serialize(buf);
+            },
             Instruction::Bipush(val) => {
                 (0x10 as u8).serialize(buf);
                 val.serialize(buf);

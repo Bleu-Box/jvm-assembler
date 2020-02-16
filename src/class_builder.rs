@@ -152,6 +152,31 @@ impl<'a> MethodBuilder<'a> {
         self.increase_stack_depth();
     }
 
+    pub fn istore0(&mut self) {
+        self.push_instruction(Instruction::Istore0);
+        self.increase_stack_depth();
+    }
+
+    pub fn istore1(&mut self) {
+        self.push_instruction(Instruction::Istore1);
+        self.increase_stack_depth();
+    }
+
+    pub fn istore2(&mut self) {
+        self.push_instruction(Instruction::Istore2);
+        self.increase_stack_depth();
+    }
+
+    pub fn istore3(&mut self) {
+        self.push_instruction(Instruction::Istore3);
+        self.increase_stack_depth();
+    }
+
+    pub fn istore(&mut self, idx: u8) {
+        self.push_instruction(Instruction::Istore(idx));
+        self.increase_stack_depth();
+    }
+    
     pub fn bipush(&mut self, value: i8) {
         self.push_instruction(Instruction::Bipush(value as u8));
         self.increase_stack_depth();
