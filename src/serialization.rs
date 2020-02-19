@@ -745,6 +745,9 @@ impl Serializable for Instruction {
             Instruction::Iadd => {
                 (0x60 as u8).serialize(buf);
             },
+            Instruction::IReturn => {
+                (0xAC as u8).serialize(buf);
+            },
             Instruction::Return => {
                 (0xB1 as u8).serialize(buf);
             },

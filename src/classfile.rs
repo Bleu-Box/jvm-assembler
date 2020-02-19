@@ -117,6 +117,7 @@ pub enum Instruction {
     IfIcmpGt(u16),      // 0xA3
     IfIcmpLe(u16),      // 0xA4
     Goto(u16),          // 0xA7
+    IReturn,            // 0xac
     Return,             // 0xB1
     GetStatic(u16),     // 0xB2
     InvokeVirtual(u16), // 0xB6
@@ -203,6 +204,7 @@ impl Instruction {
             Instruction::IfIcmpGt(_) => 3,
             Instruction::IfIcmpLe(_) => 3,
             Instruction::Goto(_) => 3,
+            Instruction::IReturn => 1,
             Instruction::Return => 1,
             Instruction::GetStatic(_) => 3,
             Instruction::InvokeVirtual(_) => 3,

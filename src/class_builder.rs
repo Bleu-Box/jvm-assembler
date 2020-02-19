@@ -284,7 +284,11 @@ impl<'a> MethodBuilder<'a> {
     pub fn goto(&mut self, label: &'a str) {
         self.delay_instruction(label, Instruction::Goto(0));
     }
-
+    
+    pub fn ireturn(&mut self) {
+        self.push_instruction(Instruction::IReturn);
+    }
+    
     pub fn do_return(&mut self) {
         self.push_instruction(Instruction::Return);
     }
