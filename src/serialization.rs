@@ -671,6 +671,22 @@ impl Serializable for Instruction {
                 (0x10 as u8).serialize(buf);
                 val.serialize(buf);
             },
+            Instruction::Iload0 => {
+                (0x1a as u8).serialize(buf);
+            },
+            Instruction::Iload1 => {
+                (0x1b as u8).serialize(buf);
+            },
+            Instruction::Iload2 => {
+                (0x1c as u8).serialize(buf);
+            },
+            Instruction::Iload3 => {
+                (0x1d as u8).serialize(buf);
+            },
+            Instruction::Iload(val) => {
+                (0x15 as u8).serialize(buf);
+                val.serialize(buf);
+            },
             Instruction::LoadConstant(index) => {
                 (0x12 as u8).serialize(buf);
                 index.serialize(buf);

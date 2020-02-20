@@ -182,6 +182,31 @@ impl<'a> MethodBuilder<'a> {
         self.increase_stack_depth();
     }
 
+    pub fn iload0(&mut self) {
+        self.push_instruction(Instruction::Iload0);
+        self.increase_stack_depth();
+    }
+
+    pub fn iload1(&mut self) {
+        self.push_instruction(Instruction::Iload1);
+        self.increase_stack_depth();
+    }
+
+    pub fn iload2(&mut self) {
+        self.push_instruction(Instruction::Iload2);
+        self.increase_stack_depth();
+        }
+
+    pub fn iload3(&mut self) {
+        self.push_instruction(Instruction::Iload3);
+        self.increase_stack_depth();
+    }
+
+    pub fn iload(&mut self, reg: u8) {
+        self.push_instruction(Instruction::Iload(reg));
+        self.increase_stack_depth();
+    }    
+    
     pub fn load_constant(&mut self, value: &str) {
         let string_index = self.classfile.define_string(value);
         if string_index > ::std::u8::MAX as u16 {
