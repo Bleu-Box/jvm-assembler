@@ -89,6 +89,7 @@ pub struct MethodBuilder<'a> {
     max_stack_depth: u16,
     stack_frames: Vec<StackMapFrame>,
     last_stack_frame_index: Option<u16>,
+    num_locals: u16,
 }
 
 #[derive(Debug)]
@@ -114,6 +115,7 @@ impl<'a> MethodBuilder<'a> {
             max_stack_depth: 0,
             stack_frames: vec![],
             last_stack_frame_index: None,
+            num_locals: argument_types.len() as u16,
         }
     }
 
@@ -155,26 +157,31 @@ impl<'a> MethodBuilder<'a> {
     pub fn istore0(&mut self) {
         self.push_instruction(Instruction::Istore0);
         self.increase_stack_depth();
+        self.increase_locals();
     }
 
     pub fn istore1(&mut self) {
         self.push_instruction(Instruction::Istore1);
         self.increase_stack_depth();
+        self.increase_locals();
     }
 
     pub fn istore2(&mut self) {
         self.push_instruction(Instruction::Istore2);
         self.increase_stack_depth();
+        self.increase_locals();
     }
 
     pub fn istore3(&mut self) {
         self.push_instruction(Instruction::Istore3);
         self.increase_stack_depth();
+        self.increase_locals();
     }
 
     pub fn istore(&mut self, idx: u8) {
         self.push_instruction(Instruction::Istore(idx));
         self.increase_stack_depth();
+        self.increase_locals();
     }
     
     pub fn bipush(&mut self, value: i8) {
@@ -378,6 +385,10 @@ impl<'a> MethodBuilder<'a> {
         self.instructions.push((index, IntermediateInstruction::Waiting(label, instruction)));
     }
 
+    fn increase_locals(&mut self) {
+        self.num_locals += 1;
+    }
+
     fn increase_stack_depth(&mut self) {
         self.curr_stack_depth += 1;
         if self.curr_stack_depth > self.max_stack_depth {
@@ -408,15 +419,17 @@ impl<'a> MethodBuilder<'a> {
                 fill_offset(i, offset)
             }
         }).collect();
-
+        
         let stack_map_table_index = classfile.define_utf8("StackMapTable");
-        let stack_map_table = Attribute::StackMapTable(stack_map_table_index, self.stack_frames);
+        let stack_map_table = Attribute::StackMapTable(stack_map_table_index,
+                                                       self.stack_frames);
 
-        // TODO track max_locals counts instead of hard-coding to 1
         let code_index = classfile.define_utf8("Code");
-        let code = Attribute::Code(code_index, self.max_stack_depth, 1, real_instructions, vec![], vec![stack_map_table]);
+        let code = Attribute::Code(code_index, self.max_stack_depth, self.num_locals,
+                                   real_instructions, vec![], vec![stack_map_table]);
 
-        let method = Method::new(self.access_flags, self.name_index, self.descriptor_index, vec![code]);
+        let method = Method::new(self.access_flags, self.name_index, self.descriptor_index,
+                                 vec![code]);
         classfile.methods.push(method);
     }
 }
