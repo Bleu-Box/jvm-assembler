@@ -246,6 +246,11 @@ impl<'a> MethodBuilder<'a> {
         self.decrease_stack_depth();
     }
 
+    pub fn isub(&mut self) {
+        self.push_instruction(Instruction::Isub);
+        self.decrease_stack_depth();
+    }
+    
     pub fn ifeq(&mut self, label: &'a str) {
         self.delay_instruction(label, Instruction::IfEq(0));
         self.decrease_stack_depth();

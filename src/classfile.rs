@@ -109,6 +109,7 @@ pub enum Instruction {
     Aload3,             // 0x2D
     Aaload,             // 0x32
     Iadd,               // 0x60
+    Isub,               // 0x64
     IfEq(u16),          // 0x99
     IfNe(u16),          // 0x9A
     IfLt(u16),          // 0x9B
@@ -201,6 +202,7 @@ impl Instruction {
             Instruction::Aload3 => 1,
             Instruction::Aaload => 1,
             Instruction::Iadd => 1,
+            Instruction::Isub => 1,
             Instruction::IfEq(_) => 3,
             Instruction::IfNe(_) => 3,
             Instruction::IfLt(_) => 3,
