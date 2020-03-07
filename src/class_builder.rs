@@ -156,31 +156,31 @@ impl<'a> MethodBuilder<'a> {
 
     pub fn istore0(&mut self) {
         self.push_instruction(Instruction::Istore0);
-        self.increase_stack_depth();
+        self.decrease_stack_depth();
         self.increase_locals();
     }
 
     pub fn istore1(&mut self) {
         self.push_instruction(Instruction::Istore1);
-        self.increase_stack_depth();
+        self.decrease_stack_depth();
         self.increase_locals();
     }
-
+    
     pub fn istore2(&mut self) {
         self.push_instruction(Instruction::Istore2);
-        self.increase_stack_depth();
+        self.decrease_stack_depth();
         self.increase_locals();
     }
 
     pub fn istore3(&mut self) {
         self.push_instruction(Instruction::Istore3);
-        self.increase_stack_depth();
+        self.decrease_stack_depth();
         self.increase_locals();
     }
 
     pub fn istore(&mut self, idx: u8) {
         self.push_instruction(Instruction::Istore(idx));
-        self.increase_stack_depth();
+        self.decrease_stack_depth();
         self.increase_locals();
     }
     
@@ -193,7 +193,7 @@ impl<'a> MethodBuilder<'a> {
         self.push_instruction(Instruction::Iload0);
         self.increase_stack_depth();
     }
-
+    
     pub fn iload1(&mut self) {
         self.push_instruction(Instruction::Iload1);
         self.increase_stack_depth();
@@ -202,7 +202,7 @@ impl<'a> MethodBuilder<'a> {
     pub fn iload2(&mut self) {
         self.push_instruction(Instruction::Iload2);
         self.increase_stack_depth();
-        }
+    }
 
     pub fn iload3(&mut self) {
         self.push_instruction(Instruction::Iload3);
@@ -324,6 +324,7 @@ impl<'a> MethodBuilder<'a> {
     
     pub fn ireturn(&mut self) {
         self.push_instruction(Instruction::IReturn);
+        self.decrease_stack_depth();
     }
     
     pub fn do_return(&mut self) {
