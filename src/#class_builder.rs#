@@ -158,31 +158,31 @@ impl<'a> MethodBuilder<'a> {
 
     pub fn istore0(&mut self) {
         self.push_instruction(Instruction::Istore0);
-        self.decrease_stack_depth();
+        self.increase_stack_depth();
         self.increase_locals();
     }
 
     pub fn istore1(&mut self) {
         self.push_instruction(Instruction::Istore1);
-        self.decrease_stack_depth();
+        self.increase_stack_depth();
         self.increase_locals();
     }
-    
+
     pub fn istore2(&mut self) {
         self.push_instruction(Instruction::Istore2);
-        self.decrease_stack_depth();
+        self.increase_stack_depth();
         self.increase_locals();
     }
 
     pub fn istore3(&mut self) {
         self.push_instruction(Instruction::Istore3);
-        self.decrease_stack_depth();
+        self.increase_stack_depth();
         self.increase_locals();
     }
 
     pub fn istore(&mut self, idx: u8) {
         self.push_instruction(Instruction::Istore(idx));
-        self.decrease_stack_depth();
+        self.increase_stack_depth();
         self.increase_locals();
     }
     
@@ -191,16 +191,11 @@ impl<'a> MethodBuilder<'a> {
         self.increase_stack_depth();
     }
 
-    pub fn sipush(&mut self, val0: i8, val1: i8) {
-        self.push_instruction(Instruction::Sipush(val0 as u8, val1 as u8));
-        self.increase_stack_depth();
-    }
-    
     pub fn iload0(&mut self) {
         self.push_instruction(Instruction::Iload0);
         self.increase_stack_depth();
     }
-    
+
     pub fn iload1(&mut self) {
         self.push_instruction(Instruction::Iload1);
         self.increase_stack_depth();
@@ -209,7 +204,7 @@ impl<'a> MethodBuilder<'a> {
     pub fn iload2(&mut self) {
         self.push_instruction(Instruction::Iload2);
         self.increase_stack_depth();
-    }
+        }
 
     pub fn iload3(&mut self) {
         self.push_instruction(Instruction::Iload3);
@@ -331,7 +326,6 @@ impl<'a> MethodBuilder<'a> {
     
     pub fn ireturn(&mut self) {
         self.push_instruction(Instruction::IReturn);
-        self.decrease_stack_depth();
     }
     
     pub fn do_return(&mut self) {
@@ -371,7 +365,7 @@ impl<'a> MethodBuilder<'a> {
 
     pub fn label(&mut self, name: &str) {
         self.labels.insert(name.to_owned(), self.stack_index);
-        
+
         // create a stack map table entry
         let offset = match self.last_stack_frame_index {
             Some(i) => self.stack_index - i - 1,
@@ -437,11 +431,11 @@ impl<'a> MethodBuilder<'a> {
         let stack_map_table_index = classfile.define_utf8("StackMapTable");
         let stack_map_table = Attribute::StackMapTable(stack_map_table_index,
                                                        self.stack_frames);
-        
+
         let code_index = classfile.define_utf8("Code");
         let code = Attribute::Code(code_index, self.max_stack_depth, self.num_locals,
                                    real_instructions, vec![], vec![stack_map_table]);
-
+        
         let method = Method::new(self.access_flags, self.name_index, self.descriptor_index,
                                  vec![code]);
         classfile.methods.push(method);

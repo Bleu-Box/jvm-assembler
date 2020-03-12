@@ -97,6 +97,7 @@ pub enum Instruction {
     Istore3,            // 0x3e
     Istore(u8),         // 0x36
     Bipush(u8),         // 0x10
+    Sipush(u8, u8),     // 0x11
     Iload0,             // 0x1a
     Iload1,             // 0x1b
     Iload2,             // 0x1c
@@ -190,6 +191,7 @@ impl Instruction {
             Instruction::Istore3 => 1,
             Instruction::Istore(_) => 2,
             Instruction::Bipush(_) => 2,
+            Instruction::Sipush(_, _) => 3,
             Instruction::Iload0 => 1,
             Instruction::Iload1 => 1,
             Instruction::Iload2 => 1,

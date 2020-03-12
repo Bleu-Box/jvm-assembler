@@ -672,6 +672,11 @@ impl Serializable for Instruction {
                 (0x10 as u8).serialize(buf);
                 val.serialize(buf);
             },
+            Instruction::Sipush(val0, val1) => {
+                (0x11 as u8).serialize(buf);
+                val0.serialize(buf);
+                val1.serialize(buf);
+            },
             Instruction::Iload0 => {
                 (0x1a as u8).serialize(buf);
             },
