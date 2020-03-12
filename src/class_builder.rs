@@ -34,8 +34,15 @@ impl ClassBuilder {
     }
     
     fn push_constant(&mut self, constant: Constant) -> u16 {
-        // TODO check if this constant is exactly equal to anything already defined in constants.
-        // If so, return the existing index instead of re-defining it.
+        let mut i: u16 = 0;
+        for c in &self.constants {
+            if constant == *c {
+                return i;
+            }
+
+            i += 1;
+        }
+        
         self.constants.push(constant);
         self.constants.len() as u16
     }
