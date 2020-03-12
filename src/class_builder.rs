@@ -364,7 +364,7 @@ impl<'a> MethodBuilder<'a> {
 
     pub fn label(&mut self, name: &str) {
         self.labels.insert(name.to_owned(), self.stack_index);
-
+        
         // create a stack map table entry
         let offset = match self.last_stack_frame_index {
             Some(i) => self.stack_index - i - 1,
@@ -429,7 +429,7 @@ impl<'a> MethodBuilder<'a> {
         let stack_map_table_index = classfile.define_utf8("StackMapTable");
         let stack_map_table = Attribute::StackMapTable(stack_map_table_index,
                                                        self.stack_frames);
-
+        
         let code_index = classfile.define_utf8("Code");
         let code = Attribute::Code(code_index, self.max_stack_depth, self.num_locals,
                                    real_instructions, vec![], vec![stack_map_table]);

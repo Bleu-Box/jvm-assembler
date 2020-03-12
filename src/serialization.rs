@@ -375,13 +375,14 @@ impl Serializable for Attribute {
         // generate a temporary buffer holding the attribute "body"
         let mut attribute_body = vec![];
         let mut attribute_name_index;
-
+        
         {
             let mut body_buf = &mut attribute_body;
             match self {
-                Attribute::Code(name_index, max_stack, max_locals, code, exception_table, attributes) => {
+                Attribute::Code(name_index, max_stack, max_locals,
+                                code, exception_table, attributes) => {
                     attribute_name_index = name_index;
-
+                    
                     max_stack.serialize(body_buf);
                     max_locals.serialize(body_buf);
                     code.serialize(body_buf);
