@@ -7,7 +7,9 @@ fn main() {
 
     {
         // create main method
-        let mut method = class.define_method(ACC_PUBLIC | ACC_STATIC, "main", &[Java::Array(Box::new(Java::Class("java/lang/String")))], &Java::Void);
+        let mut method = class.define_method(ACC_PUBLIC | ACC_STATIC, "main",
+                                             &[Java::Array(Box::new(Java::Class("java/lang/String")))],
+                                             &Java::Void);
 
         // if (args.length > 0) {
         //     System.out.println("Hello with args!");

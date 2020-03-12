@@ -191,11 +191,6 @@ impl<'a> MethodBuilder<'a> {
         self.increase_stack_depth();
     }
 
-    pub fn sipush(&mut self, val0: i8, val1: i8) {
-        self.push_instruction(Instruction::Sipush(val0 as u8, val1 as u8));
-        self.increase_stack_depth();
-    }
-    
     pub fn iload0(&mut self) {
         self.push_instruction(Instruction::Iload0);
         self.increase_stack_depth();
@@ -440,7 +435,7 @@ impl<'a> MethodBuilder<'a> {
         let code_index = classfile.define_utf8("Code");
         let code = Attribute::Code(code_index, self.max_stack_depth, self.num_locals,
                                    real_instructions, vec![], vec![stack_map_table]);
-
+        
         let method = Method::new(self.access_flags, self.name_index, self.descriptor_index,
                                  vec![code]);
         classfile.methods.push(method);
