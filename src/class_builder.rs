@@ -35,7 +35,7 @@ impl ClassBuilder {
     }
     
     fn push_constant(&mut self, constant: Constant) -> u16 {
-        let mut i: u16 = 0;
+        let mut i: u16 = 1;
         for c in &self.constants {
             if constant == *c {
                 return i;
