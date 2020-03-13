@@ -73,6 +73,25 @@ trait Serializable {
     fn deserialize(&mut Deserializer, &Classfile) -> Self;
 }
 
+impl Serializable for i32 {
+    fn serialize(self, buf: &mut Vec<u8>) {
+        // convert negative integers into their 2's complement
+        // of their (positive) magnitude
+        let n = if self < 0 {
+            (!self.abs() + 0x01) as u32
+        } else {
+            self as u32
+        };
+
+        n.serialize(buf);
+    }
+
+    fn deserialize(buf: &mut Deserializer, _classfile: &Classfile) -> i32 {
+        let v = buf.take_bytes(4);
+        ((v[0] as i32) << 24) + ((v[1] as i32) << 16) + ((v[2] as i32) << 8) + (v[3] as i32)
+    }
+}
+
 impl Serializable for u8 {
     fn serialize(self, buf: &mut Vec<u8>) {
         buf.push(self)
@@ -292,6 +311,10 @@ impl Serializable for Constant {
                 (1 as u8).serialize(buf);
                 string.serialize(buf);
             },
+            Constant::Integer(n) => {
+                (3 as u8).serialize(buf);
+                n.serialize(buf);
+            },
             Constant::Class(name_index) => {
                 (7 as u8).serialize(buf);
                 name_index.serialize(buf);
@@ -322,6 +345,7 @@ impl Serializable for Constant {
         let code = u8::deserialize(buf, classfile);
         match code {
             1 => Constant::Utf8(String::deserialize(buf, classfile)),
+            3 => Constant::Integer(i32::deserialize(buf, classfile)),
             7 => Constant::Class(u16::deserialize(buf, classfile)),
             8 => Constant::String(u16::deserialize(buf, classfile)),
             9 => Constant::Fieldref(u16::deserialize(buf, classfile), u16::deserialize(buf, classfile)),

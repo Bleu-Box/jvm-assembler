@@ -23,6 +23,7 @@ impl ClassBuilder {
             constants: vec![],
             methods: vec![],
         };
+
         builder.this_class_index = builder.define_class(this_class);
         builder.super_class_index = builder.define_class(super_class);
         builder
@@ -45,6 +46,10 @@ impl ClassBuilder {
         
         self.constants.push(constant);
         self.constants.len() as u16
+    }
+
+    fn define_integer(&mut self, n: i32) -> u16 {
+        self.push_constant(Constant::Integer(n))
     }
 
     fn define_utf8(&mut self, string: &str) -> u16 {
@@ -234,6 +239,15 @@ impl<'a> MethodBuilder<'a> {
             panic!("Placed a constant in too high of an index: {}", string_index)
         }
         self.push_instruction(Instruction::LoadConstant(string_index as u8));
+        self.increase_stack_depth();
+    }
+
+    pub fn load_constant_integer(&mut self, value: i32) {
+        let i32_index = self.classfile.define_integer(value);
+        if i32_index > ::std::u8::MAX as u16 {
+            panic!("Placed a constant in too high of an index: {}", i32_index)
+        }
+        self.push_instruction(Instruction::LoadConstant(i32_index as u8));
         self.increase_stack_depth();
     }
 
