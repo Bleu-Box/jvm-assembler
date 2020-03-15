@@ -85,6 +85,7 @@ pub enum VerificationType {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Instruction {
+    I2C,                // 0x92
     IconstM1,           // 0x02
     Iconst0,            // 0x03
     Iconst1,            // 0x04
@@ -179,6 +180,7 @@ impl Method {
 impl Instruction {
     pub fn size(&self) -> u8 {
         match *self {
+            Instruction::I2C => 1,
             Instruction::IconstM1 => 1,
             Instruction::Iconst0 => 1,
             Instruction::Iconst1 => 1,

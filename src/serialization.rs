@@ -655,6 +655,9 @@ impl Serializable for VerificationType {
 impl Serializable for Instruction {
     fn serialize(self, buf: &mut Vec<u8>) {
         match self {
+            Instruction::I2C => {
+                (0x92 as u8).serialize(buf);
+            },
             Instruction::IconstM1 => {
                 (0x2 as u8).serialize(buf);
             },

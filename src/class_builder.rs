@@ -29,8 +29,8 @@ impl ClassBuilder {
         builder
     }
 
-    pub fn define_method(&mut self, access_flags: u16, name: &str, argument_types: &[Java], return_type: &Java)
-                         -> MethodBuilder {
+    pub fn define_method(&mut self, access_flags: u16, name: &str, argument_types: &[Java],
+                         return_type: &Java) -> MethodBuilder {
         MethodBuilder::new(self, access_flags, name, argument_types, return_type)
     }
     
@@ -73,7 +73,8 @@ impl ClassBuilder {
         self.push_constant(Constant::Fieldref(class_index, name_and_type_index))
     }
 
-    fn define_methodref(&mut self, class: &str, name: &str, argument_types: &[Java], return_type: &Java) -> u16 {
+    fn define_methodref(&mut self, class: &str, name: &str, argument_types: &[Java],
+                        return_type: &Java) -> u16 {
         let class_index = self.define_class(class);
         let descriptor = method_signature(argument_types, return_type);
         let name_and_type_index = self.define_name_and_type(name, &descriptor);
@@ -87,7 +88,8 @@ impl ClassBuilder {
     }
 
     pub fn done(self) -> Classfile {
-        Classfile::new(self.constants, self.access_flags, self.this_class_index, self.super_class_index, self.methods)
+        Classfile::new(self.constants, self.access_flags, self.this_class_index,
+                       self.super_class_index, self.methods)
     }
 }
 
@@ -113,7 +115,8 @@ pub enum IntermediateInstruction<'a> {
 }
 
 impl<'a> MethodBuilder<'a> {
-    fn new(classfile: &'a mut ClassBuilder, access_flags: u16, name: &str, argument_types: &[Java], return_type: &Java) -> MethodBuilder<'a> {
+    fn new(classfile: &'a mut ClassBuilder, access_flags: u16, name: &str,
+           argument_types: &[Java], return_type: &Java) -> MethodBuilder<'a> {
         let name_index = classfile.define_utf8(name);
         let descriptor = method_signature(argument_types, return_type);
         let descriptor_index = classfile.define_utf8(&descriptor);
@@ -133,6 +136,11 @@ impl<'a> MethodBuilder<'a> {
         }
     }
 
+    pub fn i2c(&mut self) {
+        self.push_instruction(Instruction::I2C);
+        self.increase_stack_depth();
+    }
+    
     pub fn iconstm1(&mut self) {
         self.push_instruction(Instruction::IconstM1);
         self.increase_stack_depth();
