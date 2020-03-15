@@ -106,6 +106,7 @@ pub struct MethodBuilder<'a> {
     stack_frames: Vec<StackMapFrame>,
     last_stack_frame_index: Option<u16>,
     num_locals: u16,
+    stack_types: Vec<VerificationType>,
 }
 
 #[derive(Debug)]
@@ -133,47 +134,54 @@ impl<'a> MethodBuilder<'a> {
             stack_frames: vec![],
             last_stack_frame_index: None,
             num_locals: argument_types.len() as u16,
+            stack_types: Vec::new(),
         }
     }
 
     pub fn i2c(&mut self) {
         self.push_instruction(Instruction::I2C);
-        self.increase_stack_depth();
     }
     
     pub fn iconstm1(&mut self) {
         self.push_instruction(Instruction::IconstM1);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn iconst0(&mut self) {
         self.push_instruction(Instruction::Iconst0);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn iconst1(&mut self) {
         self.push_instruction(Instruction::Iconst1);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn iconst2(&mut self) {
         self.push_instruction(Instruction::Iconst2);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn iconst3(&mut self) {
         self.push_instruction(Instruction::Iconst3);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn iconst4(&mut self) {
         self.push_instruction(Instruction::Iconst4);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn iconst5(&mut self) {
         self.push_instruction(Instruction::Iconst5);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn istore0(&mut self) {
@@ -209,36 +217,43 @@ impl<'a> MethodBuilder<'a> {
     pub fn bipush(&mut self, value: i8) {
         self.push_instruction(Instruction::Bipush(value as u8));
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn sipush(&mut self, val0: i8, val1: i8) {
         self.push_instruction(Instruction::Sipush(val0 as u8, val1 as u8));
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
     
     pub fn iload0(&mut self) {
         self.push_instruction(Instruction::Iload0);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
     
     pub fn iload1(&mut self) {
         self.push_instruction(Instruction::Iload1);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn iload2(&mut self) {
         self.push_instruction(Instruction::Iload2);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn iload3(&mut self) {
         self.push_instruction(Instruction::Iload3);
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn iload(&mut self, reg: u8) {
         self.push_instruction(Instruction::Iload(reg));
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }    
     
     pub fn load_constant(&mut self, value: &str) {
@@ -248,6 +263,7 @@ impl<'a> MethodBuilder<'a> {
         }
         self.push_instruction(Instruction::LoadConstant(string_index as u8));
         self.increase_stack_depth();
+        // TODO: push to stack_types
     }
 
     pub fn load_constant_integer(&mut self, value: i32) {
@@ -257,31 +273,37 @@ impl<'a> MethodBuilder<'a> {
         }
         self.push_instruction(Instruction::LoadConstant(i32_index as u8));
         self.increase_stack_depth();
+        self.stack_types.push(VerificationType::Integer);
     }
 
     pub fn aload0(&mut self) {
         self.push_instruction(Instruction::Aload0);
         self.increase_stack_depth();
+        // TODO: push to stack_types
     }
 
     pub fn aload1(&mut self) {
         self.push_instruction(Instruction::Aload1);
         self.increase_stack_depth();
+        // TODO: push to stack_types
     }
 
     pub fn aload2(&mut self) {
         self.push_instruction(Instruction::Aload2);
         self.increase_stack_depth();
+        // TODO: push to stack_types
     }
 
     pub fn aload3(&mut self) {
         self.push_instruction(Instruction::Aload3);
         self.increase_stack_depth();
+        // TODO: push to stack_types
     }
 
     pub fn aaload(&mut self) {
         self.push_instruction(Instruction::Aaload);
         self.decrease_stack_depth();
+        // TODO: push to stack_types
     }
 
     pub fn iadd(&mut self) {
@@ -327,31 +349,37 @@ impl<'a> MethodBuilder<'a> {
     pub fn if_icmp_eq(&mut self, label: &'a str) {
         self.delay_instruction(label, Instruction::IfIcmpEq(0));
         self.decrease_stack_depth_by(2);
+        // TODO: push to stack_types?
     }
 
     pub fn if_icmp_ne(&mut self, label: &'a str) {
         self.delay_instruction(label, Instruction::IfIcmpNe(0));
         self.decrease_stack_depth_by(2);
+        // TODO: push to stack_types?
     }
 
     pub fn if_icmp_lt(&mut self, label: &'a str) {
         self.delay_instruction(label, Instruction::IfIcmpLt(0));
         self.decrease_stack_depth_by(2);
+        // TODO: push to stack_types?
     }
 
     pub fn if_icmp_ge(&mut self, label: &'a str) {
         self.delay_instruction(label, Instruction::IfIcmpGe(0));
         self.decrease_stack_depth_by(2);
+        // TODO: push to stack_types?
     }
 
     pub fn if_icmp_gt(&mut self, label: &'a str) {
         self.delay_instruction(label, Instruction::IfIcmpGt(0));
         self.decrease_stack_depth_by(2);
+        // TODO: push to stack_types?
     }
 
     pub fn if_icmp_le(&mut self, label: &'a str) {
         self.delay_instruction(label, Instruction::IfIcmpLe(0));
         self.decrease_stack_depth_by(2);
+        // TODO: push to stack_types?
     }
 
     pub fn goto(&mut self, label: &'a str) {
@@ -371,31 +399,42 @@ impl<'a> MethodBuilder<'a> {
         let fieldref_index = self.classfile.define_fieldref(class, name, argument_type);
         self.push_instruction(Instruction::GetStatic(fieldref_index));
         self.increase_stack_depth();
+        // TODO: push to stack_types
     }
 
-    pub fn invoke_virtual(&mut self, class: &str, name: &str, argument_types: &[Java], return_type: &Java) {
-        let methodref_index = self.classfile.define_methodref(class, name, argument_types, return_type);
+    pub fn invoke_virtual(&mut self, class: &str, name: &str,
+                          argument_types: &[Java], return_type: &Java) {
+        let methodref_index =
+            self.classfile.define_methodref(class, name, argument_types, return_type);
         self.push_instruction(Instruction::InvokeVirtual(methodref_index));
         self.decrease_stack_depth_by(argument_types.len() as u8 + 1);
         if *return_type != Java::Void { self.increase_stack_depth(); }
+        // TODO: push to stack_types
     }
 
-    pub fn invoke_special(&mut self, class: &str, name: &str, argument_types: &[Java], return_type: &Java) {
-        let methodref_index = self.classfile.define_methodref(class, name, argument_types, return_type);
+    pub fn invoke_special(&mut self, class: &str, name: &str,
+                          argument_types: &[Java], return_type: &Java) {
+        let methodref_index =
+            self.classfile.define_methodref(class, name, argument_types, return_type);
         self.push_instruction(Instruction::InvokeSpecial(methodref_index));
         self.decrease_stack_depth_by(argument_types.len() as u8 + 1);
         if *return_type != Java::Void { self.increase_stack_depth(); }
+        // TODO: push to stack_types
     }
 
-    pub fn invoke_static(&mut self, class: &str, name: &str, argument_types: &[Java], return_type: &Java) {
-        let methodref_index = self.classfile.define_methodref(class, name, argument_types, return_type);
+    pub fn invoke_static(&mut self, class: &str, name: &str,
+                         argument_types: &[Java], return_type: &Java) {
+        let methodref_index =
+            self.classfile.define_methodref(class, name, argument_types, return_type);
         self.push_instruction(Instruction::InvokeStatic(methodref_index));
         self.decrease_stack_depth_by(argument_types.len() as u8);
         if *return_type != Java::Void { self.increase_stack_depth(); }
+        // TODO: push to stack_types
     }
 
     pub fn array_length(&mut self) {
         self.push_instruction(Instruction::ArrayLength);
+        // TODO: push to stack_types?
     }
 
     pub fn label(&mut self, name: &str) {
@@ -406,11 +445,22 @@ impl<'a> MethodBuilder<'a> {
             Some(i) => self.stack_index - i - 1,
             None => self.stack_index
         };
-        let frame = if offset > ::std::u8::MAX as u16 {
-            StackMapFrame::SameFrameExtended(offset)
+
+        let frame = if self.stack_types.is_empty() {
+            if offset > ::std::u8::MAX as u16 {
+                StackMapFrame::SameFrameExtended(offset)
+            } else {
+                StackMapFrame::SameFrame(offset as u8)
+            }
         } else {
-            StackMapFrame::SameFrame(offset as u8)
+            let last_type = self.stack_types[self.stack_types.len()-1].clone();
+            if offset > ::std::u8::MAX as u16 {
+                StackMapFrame::SameLocals1StackItemFrameExtended(offset, last_type)
+            } else {
+                StackMapFrame::SameLocals1StackItemFrame(offset as u8, last_type)
+            }
         };
+        
         self.stack_frames.push(frame);
         self.last_stack_frame_index = Some(self.stack_index);
     }
@@ -440,12 +490,14 @@ impl<'a> MethodBuilder<'a> {
 
     fn decrease_stack_depth(&mut self) {
         self.curr_stack_depth -= 1;
+        self.stack_types.pop();
     }
 
     fn decrease_stack_depth_by(&mut self, n: u8) {
         self.curr_stack_depth -= n as u16;
+        // TODO: pop from stack_types
     }
-
+    
     pub fn done(self) {
         if self.curr_stack_depth != 0 {
             println!("Warning: stack depth at the end of a method should be 0, but is {} instead",
