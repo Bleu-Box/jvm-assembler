@@ -275,7 +275,7 @@ impl<'a> MethodBuilder<'a> {
         self.increase_stack_depth();
         self.stack_types.push(VerificationType::Integer);
     }
-
+    
     pub fn aload0(&mut self) {
         self.push_instruction(Instruction::Aload0);
         self.increase_stack_depth();
@@ -442,10 +442,10 @@ impl<'a> MethodBuilder<'a> {
         
         // create a stack map table entry
         let offset = match self.last_stack_frame_index {
-            Some(i) => self.stack_index - i - 1,
+            Some(i) => i, //self.stack_index - i - 1,
             None => self.stack_index
         };
-
+        
         let frame = if self.stack_types.is_empty() {
             if offset > ::std::u8::MAX as u16 {
                 StackMapFrame::SameFrameExtended(offset)
@@ -455,9 +455,9 @@ impl<'a> MethodBuilder<'a> {
         } else {
             let last_type = self.stack_types[self.stack_types.len()-1].clone();
             if offset > ::std::u8::MAX as u16 {
-                StackMapFrame::SameLocals1StackItemFrameExtended(self.stack_index, last_type)
+                StackMapFrame::SameLocals1StackItemFrameExtended(offset, last_type)
             } else {
-                StackMapFrame::SameLocals1StackItemFrame(self.stack_index as u8, last_type)
+                StackMapFrame::SameLocals1StackItemFrame(offset as u8, last_type)
             }
         };
         
