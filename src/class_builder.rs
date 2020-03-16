@@ -442,7 +442,7 @@ impl<'a> MethodBuilder<'a> {
         
         // create a stack map table entry
         let offset = match self.last_stack_frame_index {
-            Some(i) => i, //self.stack_index - i - 1,
+            Some(i) => self.stack_index - i - 1,
             None => self.stack_index
         };
         
