@@ -144,6 +144,12 @@ impl<'a> MethodBuilder<'a> {
         self.env_num += 1;
     }
 
+    pub fn rewind_env(&mut self) {
+        if self.env_num != 0 {
+            self.env_num -= 1;
+        }
+    }
+
     pub fn i2c(&mut self) {
         self.push_instruction(Instruction::I2C);
     }
@@ -517,7 +523,6 @@ impl<'a> MethodBuilder<'a> {
         let real_instructions = self.instructions.into_iter().map(|(pos, ir)| match ir {
             IntermediateInstruction::Ready(i) => i,
             IntermediateInstruction::Waiting(l, e, i) => {
-                println!("label: {}, env: {}", l, e);
                 let tup = (l.to_string(), e);
                 let label_pos = labels.get(&tup).unwrap();
                 let offset = label_pos - pos;
