@@ -99,7 +99,7 @@ pub struct MethodBuilder<'a> {
     name_index: u16,
     descriptor_index: u16,
     instructions: Vec<(u16, IntermediateInstruction<'a>)>,
-    labels: HashMap<String, u16>,
+    labels: HashMap<(String, u16), u16>,
     stack_index: u16,
     curr_stack_depth: u16,
     max_stack_depth: u16,
@@ -107,12 +107,13 @@ pub struct MethodBuilder<'a> {
     last_stack_frame_index: Option<u16>,
     num_locals: u16,
     stack_types: Vec<VerificationType>,
+    env_num: u16,
 }
 
 #[derive(Debug)]
 pub enum IntermediateInstruction<'a> {
     Ready(Instruction),
-    Waiting(&'a str, Instruction),
+    Waiting(&'a str, u16, Instruction),
 }
 
 impl<'a> MethodBuilder<'a> {
@@ -135,7 +136,12 @@ impl<'a> MethodBuilder<'a> {
             last_stack_frame_index: None,
             num_locals: argument_types.len() as u16,
             stack_types: Vec::new(),
+            env_num: 0,
         }
+    }
+
+    pub fn change_env(&mut self) {
+        self.env_num += 1;
     }
 
     pub fn i2c(&mut self) {
@@ -438,7 +444,8 @@ impl<'a> MethodBuilder<'a> {
     }
 
     pub fn label(&mut self, name: &str) {
-        self.labels.insert(name.to_owned(), self.stack_index);
+        let env = self.env_num;
+        self.labels.insert((name.to_owned(), env), self.stack_index);
         
         // create a stack map table entry
         let offset = match self.last_stack_frame_index {
@@ -473,8 +480,10 @@ impl<'a> MethodBuilder<'a> {
 
     fn delay_instruction(&mut self, label: &'a str, instruction: Instruction) {
         let index = self.stack_index;
+        let env = self.env_num;
         self.stack_index += instruction.size() as u16;
-        self.instructions.push((index, IntermediateInstruction::Waiting(label, instruction)));
+        self.instructions.push((index, IntermediateInstruction::Waiting(label, env,
+                                                                        instruction)));
     }
 
     fn increase_locals(&mut self) {
@@ -500,16 +509,17 @@ impl<'a> MethodBuilder<'a> {
     
     pub fn done(self) {
         if self.curr_stack_depth != 0 {
-            println!("Warning: stack depth at the end of a method should be 0, but is {} instead",
-                     self.curr_stack_depth);
+            println!("Warning: stack depth at the end of a method should be 0, 
+but is {} instead", self.curr_stack_depth);
         }
 
         let classfile = self.classfile;
         let labels = self.labels;
         let real_instructions = self.instructions.into_iter().map(|(pos, ir)| match ir {
             IntermediateInstruction::Ready(i) => i,
-            IntermediateInstruction::Waiting(l, i) => {
-                let label_pos = labels.get(l).unwrap();
+            IntermediateInstruction::Waiting(l, e, i) => {
+                let tup = (l.to_string(), e);
+                let label_pos = labels.get(&tup).unwrap();
                 let offset = label_pos - pos;
                 fill_offset(i, offset)
             }
