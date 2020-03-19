@@ -509,8 +509,7 @@ impl<'a> MethodBuilder<'a> {
     
     pub fn done(self) {
         if self.curr_stack_depth != 0 {
-            println!("Warning: stack depth at the end of a method should be 0, 
-but is {} instead", self.curr_stack_depth);
+            println!("Warning: stack depth at the end of a method should be 0, but is {} instead", self.curr_stack_depth);
         }
 
         let classfile = self.classfile;
