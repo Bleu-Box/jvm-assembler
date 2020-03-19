@@ -108,6 +108,7 @@ pub struct MethodBuilder<'a> {
     num_locals: u16,
     stack_types: Vec<VerificationType>,
     env_num: u16,
+    saved_env: u16,
 }
 
 #[derive(Debug)]
@@ -137,17 +138,22 @@ impl<'a> MethodBuilder<'a> {
             num_locals: argument_types.len() as u16,
             stack_types: Vec::new(),
             env_num: 0,
+            saved_env: 0,
         }
     }
 
-    pub fn change_env(&mut self) {
+    pub fn new_env(&mut self) {
         self.env_num += 1;
     }
 
     pub fn rewind_env(&mut self) {
-        if self.env_num != 0 {
-            self.env_num -= 1;
-        }
+        let tmp = self.env_num;
+        self.env_num = self.saved_env;
+        self.saved_env = tmp;
+    }
+
+    pub fn save_env(&mut self) {
+        self.saved_env = self.env_num;
     }
 
     pub fn i2c(&mut self) {
