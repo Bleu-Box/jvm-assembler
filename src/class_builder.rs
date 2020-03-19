@@ -517,6 +517,7 @@ impl<'a> MethodBuilder<'a> {
         let real_instructions = self.instructions.into_iter().map(|(pos, ir)| match ir {
             IntermediateInstruction::Ready(i) => i,
             IntermediateInstruction::Waiting(l, e, i) => {
+                println!("label: {}, env: {}", l, e);
                 let tup = (l.to_string(), e);
                 let label_pos = labels.get(&tup).unwrap();
                 let offset = label_pos - pos;

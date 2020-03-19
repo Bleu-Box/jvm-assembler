@@ -16,6 +16,7 @@ fn main() {
         // } else {
         //     System.out.println("Hello without args!");
         // }
+        method.change_env();
         method.aload0();
         method.array_length();
         method.ifle("false");
