@@ -138,22 +138,23 @@ impl<'a> MethodBuilder<'a> {
             num_locals: argument_types.len() as u16,
             stack_types: Vec::new(),
             env_num: 0,
-            saved_env: 0,
+            env_count: 0,
         }
     }
 
-    pub fn new_env(&mut self) {
-        self.env_num += 1;
+    pub fn new_env(&mut self) -> u16 {
+        self.env_count += 1;
+        self.env_count
     }
 
-    pub fn rewind_env(&mut self) {
-        let tmp = self.env_num;
-        self.env_num = self.saved_env;
-        self.saved_env = tmp;
+    pub fn set_env(&mut self, n: u16) {
+        self.env_num = n;
     }
 
-    pub fn save_env(&mut self) {
-        self.saved_env = self.env_num;
+    pub fn set_new_env(&mut self) -> u16 {
+        self.env_count += 1;
+        self.env_num = self.env_count;
+        self.env_num
     }
 
     pub fn i2c(&mut self) {
