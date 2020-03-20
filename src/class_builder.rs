@@ -108,7 +108,7 @@ pub struct MethodBuilder<'a> {
     num_locals: u16,
     stack_types: Vec<VerificationType>,
     env_num: u16,
-    saved_env: u16,
+    env_count: u16,
 }
 
 #[derive(Debug)]
