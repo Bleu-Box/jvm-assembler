@@ -152,8 +152,7 @@ impl<'a> MethodBuilder<'a> {
     }
 
     pub fn set_new_env(&mut self) -> u16 {
-        self.env_count += 1;
-        self.env_num = self.env_count;
+        self.env_num = self.new_env();
         self.env_num
     }
 
@@ -531,6 +530,7 @@ impl<'a> MethodBuilder<'a> {
             IntermediateInstruction::Ready(i) => i,
             IntermediateInstruction::Waiting(l, e, i) => {
                 let tup = (l.to_string(), e);
+                println!("looking up with {}", tup);
                 let label_pos = labels.get(&tup).unwrap();
                 let offset = label_pos - pos;
                 fill_offset(i, offset)
