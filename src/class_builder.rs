@@ -524,13 +524,14 @@ impl<'a> MethodBuilder<'a> {
             println!("Warning: stack depth at the end of a method should be 0, but is {} instead", self.curr_stack_depth);
         }
 
+        println!("labels: {:?}", labels);
+
         let classfile = self.classfile;
         let labels = self.labels;
         let real_instructions = self.instructions.into_iter().map(|(pos, ir)| match ir {
             IntermediateInstruction::Ready(i) => i,
             IntermediateInstruction::Waiting(l, e, i) => {
                 let tup = (l.to_string(), e);
-                println!("looking up with {:?}", tup);
                 let label_pos = labels.get(&tup).unwrap();
                 let offset = label_pos - pos;
                 fill_offset(i, offset)
