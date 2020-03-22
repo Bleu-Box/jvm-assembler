@@ -530,7 +530,7 @@ impl<'a> MethodBuilder<'a> {
             IntermediateInstruction::Ready(i) => i,
             IntermediateInstruction::Waiting(l, e, i) => {
                 let tup = (l.to_string(), e);
-                println!("looking up with {}", tup);
+                println!("looking up with {:?}", tup);
                 let label_pos = labels.get(&tup).unwrap();
                 let offset = label_pos - pos;
                 fill_offset(i, offset)
