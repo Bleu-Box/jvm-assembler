@@ -524,8 +524,6 @@ impl<'a> MethodBuilder<'a> {
             println!("Warning: stack depth at the end of a method should be 0, but is {} instead", self.curr_stack_depth);
         }
 
-        println!("labels: {:?}", self.labels);
-
         let classfile = self.classfile;
         let labels = self.labels;
         let real_instructions = self.instructions.into_iter().map(|(pos, ir)| match ir {
