@@ -796,6 +796,12 @@ impl Serializable for Instruction {
             },
             Instruction::Isub => {
                 (0x64 as u8).serialize(buf);
+            },
+            Instruction::Imul => {
+                (0x68 as u8).serialize(buf);
+            },
+            Instruction::Idiv => {
+                (0x6c as u8).serialize(buf);
             }, 
             Instruction::IReturn => {
                 (0xAC as u8).serialize(buf);

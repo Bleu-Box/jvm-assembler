@@ -333,6 +333,16 @@ impl<'a> MethodBuilder<'a> {
         self.push_instruction(Instruction::Isub);
         self.decrease_stack_depth();
     }
+
+    pub fn imul(&mut self) {
+        self.push_instruction(Instruction::Imul);
+        self.decrease_stack_depth();
+    }
+
+    pub fn idiv(&mut self) {
+        self.push_instruction(Instruction::Idiv);
+        self.decrease_stack_depth();
+    }
     
     pub fn ifeq(&mut self, label: &'a str) {
         self.delay_instruction(label, Instruction::IfEq(0));
