@@ -101,10 +101,12 @@ impl Serializable for f32 {
             buf.push(0);
         }
 
+        let _self = self.abs();
+        
         // get the integer part (before the decimal) and fractional part
         // (after the decimal) of the float
-        let int_part: u32 = self.trunc() as u32;
-        let mut frac_part: f32 = self - (int_part as f32);
+        let int_part: u32 = _self.trunc() as u32;
+        let mut frac_part: f32 = _self - (int_part as f32);
 
         // convert the fractional part into a 23-bit binary representation
         let mut n: u32 = 0;
