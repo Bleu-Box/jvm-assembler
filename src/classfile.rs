@@ -99,6 +99,7 @@ pub enum Instruction {
     Fconst0,            // 0x0b
     Fconst1,            // 0x0c
     Fconst2,            // 0x0d
+    FReturn,            // 0xae
     I2C,                // 0x92
     IconstM1,           // 0x02
     Iconst0,            // 0x03
@@ -208,7 +209,8 @@ impl Instruction {
             Instruction::Fstore(u8) => 2,
             Instruction::Fconst0 => 1,   
             Instruction::Fconst1 => 1,   
-            Instruction::Fconst2 => 1,   
+            Instruction::Fconst2 => 1,
+            Instruction::FReturn => 1,
             Instruction::I2C => 1,
             Instruction::IconstM1 => 1,
             Instruction::Iconst0 => 1,

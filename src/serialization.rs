@@ -748,6 +748,9 @@ impl Serializable for Instruction {
             Instruction::Fconst2 => {
                 (0x0b as u8).serialize(buf);
             },
+            Instruction::FReturn => {
+                (0xae as u8).serialize(buf);
+            },
             Instruction::I2C => {
                 (0x92 as u8).serialize(buf);
             },

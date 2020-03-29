@@ -511,6 +511,11 @@ impl<'a> MethodBuilder<'a> {
         self.push_instruction(Instruction::IReturn);
         self.decrease_stack_depth();
     }
+
+    pub fn freturn(&mut self) {
+        self.push_instruction(Instruction::FReturn);
+        self.decrease_stack_depth();
+    }
     
     pub fn do_return(&mut self) {
         self.push_instruction(Instruction::Return);
