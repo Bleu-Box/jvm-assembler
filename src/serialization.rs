@@ -104,7 +104,7 @@ impl Serializable for f32 {
         // need to knock off the last space to make room
         // for the sign
         let bits: u32 = (sign << 31) | (self.to_bits() >> 1);
-        bits.serialize(buf);
+        bits.reverse_bits().serialize(buf);
     }
 
     fn deserialize(buf: &mut Deserializer, _classfile: &Classfile) -> f32 {
