@@ -53,9 +53,7 @@ impl ClassBuilder {
     }
 
     fn define_float(&mut self, n: f32) -> u16 {
-        let n = self.push_constant(Constant::Float(n));
-        println!("def float constant at {}", n);
-        n
+        self.push_constant(Constant::Float(n))
     }
     
     fn define_utf8(&mut self, string: &str) -> u16 {

@@ -95,9 +95,10 @@ impl Serializable for i32 {
 impl Serializable for f32 {
     fn serialize(self, buf: &mut Vec<u8>) {
         // mock-up for a float value
-        buf.push(0u8); // sign
-        (1u16 << 8).serialize(buf); // exp
-        (1u32 << 23).serialize(buf); // mantissa
+        // buf.push(0u8); // sign
+        // (1u16 << 8).serialize(buf); // exp
+        // (1u32 << 23).serialize(buf); // mantissa
+        0b0100001000001011100100000000000.serialize(buf);
 
         // push a 1 (negative) or 0 (positive) depending on the sign
         // if self < 0.0 {
