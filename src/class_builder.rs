@@ -52,6 +52,10 @@ impl ClassBuilder {
         self.push_constant(Constant::Integer(n))
     }
 
+    fn define_float(&mut self, n: f32) -> u16 {
+        self.push_constant(Constant::Float(n))
+    }
+    
     fn define_utf8(&mut self, string: &str) -> u16 {
         self.push_constant(Constant::Utf8(string.to_owned()))
     }
@@ -232,6 +236,85 @@ impl<'a> MethodBuilder<'a> {
         self.increase_locals();
     }
     
+
+    pub fn fconst0(&mut self) {
+        self.push_instruction(Instruction::Fconst0);
+        self.increase_stack_depth();
+        //self.stack_types.push(VerificationType::Float);
+    }
+
+    pub fn fconst1(&mut self) {
+        self.push_instruction(Instruction::Fconst1);
+        self.increase_stack_depth();
+        //self.stack_types.push(VerificationType::Integer);
+    }
+
+    pub fn fconst2(&mut self) {
+        self.push_instruction(Instruction::Fconst2);
+        self.increase_stack_depth();
+        //self.stack_types.push(VerificationType::Integer);
+    }
+
+    pub fn fstore0(&mut self) {
+        self.push_instruction(Instruction::Fstore0);
+        self.decrease_stack_depth();
+        self.increase_locals();
+    }
+
+    pub fn fstore1(&mut self) {
+        self.push_instruction(Instruction::Fstore1);
+        self.decrease_stack_depth();
+        self.increase_locals();
+    }
+    
+    pub fn fstore2(&mut self) {
+        self.push_instruction(Instruction::Fstore2);
+        self.decrease_stack_depth();
+        self.increase_locals();
+    }
+
+    pub fn fstore3(&mut self) {
+        self.push_instruction(Instruction::Fstore3);
+        self.decrease_stack_depth();
+        self.increase_locals();
+    }
+
+    pub fn fstore(&mut self, idx: u8) {
+        self.push_instruction(Instruction::Fstore(idx));
+        self.decrease_stack_depth();
+        self.increase_locals();
+    }
+    
+    pub fn fload0(&mut self) {
+        self.push_instruction(Instruction::Fload0);
+        self.increase_stack_depth();
+        //self.stack_types.push(VerificationType::Integer);
+    }
+    
+    pub fn fload1(&mut self) {
+        self.push_instruction(Instruction::Fload1);
+        self.increase_stack_depth();
+        //self.stack_types.push(VerificationType::Integer);
+    }
+
+    pub fn fload2(&mut self) {
+        self.push_instruction(Instruction::Fload2);
+        self.increase_stack_depth();
+        //self.stack_types.push(VerificationType::Integer);
+    }
+
+    pub fn fload3(&mut self) {
+        self.push_instruction(Instruction::Fload3);
+        self.increase_stack_depth();
+        //self.stack_types.push(VerificationType::Integer);
+    }
+
+    pub fn fload(&mut self, reg: u8) {
+        self.push_instruction(Instruction::Fload(reg));
+        self.increase_stack_depth();
+        //self.stack_types.push(VerificationType::Integer);
+    }    
+
     pub fn bipush(&mut self, value: i8) {
         self.push_instruction(Instruction::Bipush(value as u8));
         self.increase_stack_depth();
@@ -292,6 +375,16 @@ impl<'a> MethodBuilder<'a> {
         self.push_instruction(Instruction::LoadConstant(i32_index as u8));
         self.increase_stack_depth();
         self.stack_types.push(VerificationType::Integer);
+    }
+
+    pub fn load_constant_float(&mut self, value: f32) {
+        let f32_index = self.classfile.define_float(value);
+        if f32_index > ::std::u8::MAX as u16 {
+            panic!("Placed a constant in too high of an index: {}", f32_index)
+        }
+        self.push_instruction(Instruction::LoadConstant(f32_index as u8));
+        self.increase_stack_depth();
+        //self.stack_types.push(VerificationType::Integer);
     }
     
     pub fn aload0(&mut self) {

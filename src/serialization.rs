@@ -92,6 +92,54 @@ impl Serializable for i32 {
     }
 }
 
+impl Serializable for f32 {
+    fn serialize(self, buf: &mut Vec<u8>) {
+        // push a 1 (negative) or 0 (positive) depending on the sign
+        if self < 0.0 {
+            buf.push(1);
+        } else {
+            buf.push(0);
+        }
+
+        // get the integer part (before the decimal) and fractional part
+        // (after the decimal) of the float
+        let int_part: u32 = self.trunc() as u32;
+        let mut frac_part: f32 = self - (int_part as f32);
+
+        // convert the fractional part into a 23-bit binary representation
+        let mut n: u32 = 0;
+        let mut i = 0;
+        while i < 23 {
+            // multiply the fractional part by 2
+            let times_two = frac_part*2.0;
+            // if it's a whole #, add 1 to the bit representation,
+            // and then chop off the whole part
+            if times_two.trunc() == times_two {
+                n |= 1;
+            }            
+            
+            n <<= 1;
+            i += 1;
+        }
+
+        // calculate the binary exponent of the number; this is
+        // basically the 'n' in (int_part in scientific notation)*2^n
+        let exponent = 127 + (int_part as f32).log2() as u32;
+        // calculate the mantissa, i.e., the bits of the int part followed
+        // by the bits of the fractional part (except for the int part's
+        // preceding '1'; that's handled by the exponent)
+        let mantissa = ((int_part >> 1) << 23) | n;
+        // hopefully this works haha
+        exponent.serialize(buf);
+        mantissa.serialize(buf);
+    }
+
+    fn deserialize(buf: &mut Deserializer, _classfile: &Classfile) -> f32 {
+        println!("Deserialization is not yet implemented for floats!!! stop!!!");
+        return 0.0;
+    }
+}
+
 impl Serializable for u8 {
     fn serialize(self, buf: &mut Vec<u8>) {
         buf.push(self)
@@ -313,6 +361,10 @@ impl Serializable for Constant {
             },
             Constant::Integer(n) => {
                 (3 as u8).serialize(buf);
+                n.serialize(buf);
+            },
+            Constant::Float(n) => {
+                (4 as u8).serialize(buf);
                 n.serialize(buf);
             },
             Constant::Class(name_index) => {
@@ -655,6 +707,47 @@ impl Serializable for VerificationType {
 impl Serializable for Instruction {
     fn serialize(self, buf: &mut Vec<u8>) {
         match self {
+            Instruction::Fload0 => {
+                (0x22 as u8).serialize(buf);
+            },
+            Instruction::Fload1 => {
+                (0x23 as u8).serialize(buf);
+            },
+            Instruction::Fload2 => {
+                (0x24 as u8).serialize(buf);
+            },
+            Instruction::Fload3 => {
+                (0x25 as u8).serialize(buf);
+            },
+            Instruction::Fload(val) => {
+                (0x17 as u8).serialize(buf);
+                val.serialize(buf);
+            },
+            Instruction::Fstore0 => {
+                (0x43 as u8).serialize(buf);
+            },
+            Instruction::Fstore1 => {
+                (0x44 as u8).serialize(buf);
+            },
+            Instruction::Fstore2 => {
+                (0x45 as u8).serialize(buf);
+            },
+            Instruction::Fstore3 => {
+                (0x46 as u8).serialize(buf);
+            },
+            Instruction::Fstore(val) => {
+                (0x38 as u8).serialize(buf);
+                val.serialize(buf);
+            },
+            Instruction::Fconst0 => {
+                (0x0b as u8).serialize(buf);
+            },
+            Instruction::Fconst1 => {
+                (0x0c as u8).serialize(buf);
+            },
+            Instruction::Fconst2 => {
+                (0x0b as u8).serialize(buf);
+            },
             Instruction::I2C => {
                 (0x92 as u8).serialize(buf);
             },

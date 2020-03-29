@@ -20,7 +20,8 @@ pub struct Classfile {
 #[derive(Clone, Debug, PartialEq)]
 pub enum Constant {
     Utf8(String),          //  1
-    Integer(i32),          // 3
+    Integer(i32),          //  3
+    Float(f32),            //  4
     Class(u16),            //  7
     String(u16),           //  8
     Fieldref(u16, u16),    //  9
@@ -85,6 +86,19 @@ pub enum VerificationType {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Instruction {
+    Fload0,             // 0x22
+    Fload1,             // 0x23
+    Fload2,             // 0x24
+    Fload3,             // 0x25
+    Fload(u8),          // 0x17
+    Fstore0,            // 0x43
+    Fstore1,            // 0x44
+    Fstore2,            // 0x45
+    Fstore3,            // 0x46
+    Fstore(u8),         // 0x38
+    Fconst0,            // 0x0b
+    Fconst1,            // 0x0c
+    Fconst2,            // 0x0d
     I2C,                // 0x92
     IconstM1,           // 0x02
     Iconst0,            // 0x03
@@ -182,6 +196,19 @@ impl Method {
 impl Instruction {
     pub fn size(&self) -> u8 {
         match *self {
+            Instruction::Fload0 => 1,
+            Instruction::Fload1 => 1,
+            Instruction::Fload2 => 1,
+            Instruction::Fload3 => 1,
+            Instruction::Fload(u8) => 2,
+            Instruction::Fstore0 => 1, 
+            Instruction::Fstore1 => 1, 
+            Instruction::Fstore2 => 1, 
+            Instruction::Fstore3 => 1, 
+            Instruction::Fstore(u8) => 2,
+            Instruction::Fconst0 => 1,   
+            Instruction::Fconst1 => 1,   
+            Instruction::Fconst2 => 1,   
             Instruction::I2C => 1,
             Instruction::IconstM1 => 1,
             Instruction::Iconst0 => 1,
