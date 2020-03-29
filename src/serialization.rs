@@ -132,8 +132,8 @@ impl Serializable for f32 {
         // preceding '1'; that's handled by the exponent)
         let mantissa = ((int_part >> 1) << 23) | n;
         // hopefully this works haha
-        exponent.serialize(buf);
-        mantissa.serialize(buf);
+        //exponent.serialize(buf);
+        // mantissa.serialize(buf);
     }
 
     fn deserialize(buf: &mut Deserializer, _classfile: &Classfile) -> f32 {
