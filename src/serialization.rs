@@ -94,52 +94,17 @@ impl Serializable for i32 {
 
 impl Serializable for f32 {
     fn serialize(self, buf: &mut Vec<u8>) {
-        // mock-up for a float value
-        // buf.push(0u8); // sign
-        // (1u16 << 8).serialize(buf); // exp
-        // (1u32 << 23).serialize(buf); // mantissa
-        0b0100001000001011100100000000000.serialize(buf);
+        let sign = if self < 0.0 {
+            1
+        } else {
+            0
+        };
 
-        // push a 1 (negative) or 0 (positive) depending on the sign
-        // if self < 0.0 {
-        //     buf.push(1);
-        // } else {
-        //     buf.push(0);
-        // }
-
-        let _self = self.abs();
-        
-        // get the integer part (before the decimal) and fractional part
-        // (after the decimal) of the float
-        let int_part: u32 = _self.trunc() as u32;
-        let mut frac_part: f32 = _self - (int_part as f32);
-
-        // convert the fractional part into a 23-bit binary representation
-        let mut n: u32 = 0;
-        let mut i = 0;
-        while i < 23 {
-            // multiply the fractional part by 2
-            let times_two = frac_part*2.0;
-            // if it's a whole #, add 1 to the bit representation,
-            // and then chop off the whole part
-            if times_two.trunc() == times_two {
-                n |= 1;
-            }            
-            
-            n <<= 1;
-            i += 1;
-        }
-
-        // calculate the binary exponent of the number; this is
-        // basically the 'n' in (int_part in scientific notation)*2^n
-        let exponent = 127 + (int_part as f32).log2() as u32;
-        // calculate the mantissa, i.e., the bits of the int part followed
-        // by the bits of the fractional part (except for the int part's
-        // preceding '1'; that's handled by the exponent)
-        let mantissa = ((int_part >> 1) << 23) | n;
-        // hopefully this works haha
-        //exponent.serialize(buf);
-        // mantissa.serialize(buf);
+        // rust can convert the float into bits, but we
+        // need to knock off the last space to make room
+        // for the sign
+        let bits: u32 = (sign << 31) | (self.to_bits() >> 1);
+        bits.serialize(buf);
     }
 
     fn deserialize(buf: &mut Deserializer, _classfile: &Classfile) -> f32 {
