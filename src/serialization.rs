@@ -94,16 +94,7 @@ impl Serializable for i32 {
 
 impl Serializable for f32 {
     fn serialize(self, buf: &mut Vec<u8>) {
-        let sign = if self < 0.0 {
-            1
-        } else {
-            0
-        };
-
-        // rust can convert the float into bits, but we
-        // need to knock off the last space to make room
-        // for the sign
-        let bits: u32 = self.to_bits(); //(sign << 31) | (self.to_bits() >> 1);
+        let bits: u32 = self.to_bits();
         bits.serialize(buf);
     }
 
