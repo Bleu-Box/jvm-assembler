@@ -164,6 +164,14 @@ impl<'a> MethodBuilder<'a> {
         self.push_instruction(Instruction::I2C);
     }
 
+    pub fn i2f(&mut self) {
+        self.push_instruction(Instruction::I2F);
+    }
+
+    pub fn f2i(&mut self) {
+        self.push_instruction(Instruction::F2I);
+    }
+    
     pub fn irem(&mut self) {
         self.push_instruction(Instruction::Irem);
         self.decrease_stack_depth();
@@ -325,6 +333,26 @@ impl<'a> MethodBuilder<'a> {
         //self.stack_types.push(VerificationType::Integer);
     }    
 
+    pub fn fadd(&mut self) {
+        self.push_instruction(Instruction::Fadd);
+        self.decrease_stack_depth();
+    }
+
+    pub fn fsub(&mut self) {
+        self.push_instruction(Instruction::Fsub);
+        self.decrease_stack_depth();
+    }
+
+    pub fn fmul(&mut self) {
+        self.push_instruction(Instruction::Fmul);
+        self.decrease_stack_depth();
+    }
+
+    pub fn fdiv(&mut self) {
+        self.push_instruction(Instruction::Fdiv);
+        self.decrease_stack_depth();
+    }
+    
     pub fn bipush(&mut self, value: i8) {
         self.push_instruction(Instruction::Bipush(value as u8));
         self.increase_stack_depth();

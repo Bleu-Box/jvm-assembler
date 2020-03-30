@@ -677,6 +677,18 @@ impl Serializable for Instruction {
             Instruction::Frem => {
                 (0x72 as u8).serialize(buf);
             },
+            Instruction::Fmul => {
+                (0x6a as u8).serialize(buf);
+            },
+            Instruction::Fdiv => {
+                (0x6e as u8).serialize(buf);
+            },
+            Instruction::Fadd => {
+                (0x62 as u8).serialize(buf);
+            },
+            Instruction::Fsub => {
+                (0x66 as u8).serialize(buf);
+            },
             Instruction::Fload0 => {
                 (0x22 as u8).serialize(buf);
             },
@@ -723,6 +735,12 @@ impl Serializable for Instruction {
             },
             Instruction::I2C => {
                 (0x92 as u8).serialize(buf);
+            },
+            Instruction::I2F => {
+                (0x86 as u8).serialize(buf);
+            },
+            Instruction::F2I => {
+                (0x8b as u8).serialize(buf);
             },
             Instruction::IconstM1 => {
                 (0x2 as u8).serialize(buf);

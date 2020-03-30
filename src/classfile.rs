@@ -88,6 +88,10 @@ pub enum VerificationType {
 pub enum Instruction {
     Irem,               // 0x70
     Frem,               // 0x72
+    Fmul,               // 0x6a
+    Fdiv,               // 0x6e
+    Fadd,               // 0x62
+    Fsub,               // 0x66
     Fload0,             // 0x22
     Fload1,             // 0x23
     Fload2,             // 0x24
@@ -103,6 +107,8 @@ pub enum Instruction {
     Fconst2,            // 0x0d
     FReturn,            // 0xae
     I2C,                // 0x92
+    I2F,                // 0x86
+    F2I,                // 0x8b
     IconstM1,           // 0x02
     Iconst0,            // 0x03
     Iconst1,            // 0x04
@@ -200,7 +206,11 @@ impl Instruction {
     pub fn size(&self) -> u8 {
         match *self {
             Instruction::Irem => 1,
-            Instruction::Frem => 1,
+            Instruction::Frem => 1,            
+            Instruction::Fmul => 1,             
+            Instruction::Fdiv => 1,
+            Instruction::Fadd => 1,
+            Instruction::Fsub => 1,
             Instruction::Fload0 => 1,
             Instruction::Fload1 => 1,
             Instruction::Fload2 => 1,
@@ -216,6 +226,8 @@ impl Instruction {
             Instruction::Fconst2 => 1,
             Instruction::FReturn => 1,
             Instruction::I2C => 1,
+            Instruction::I2F => 1,
+            Instruction::F2I => 1,
             Instruction::IconstM1 => 1,
             Instruction::Iconst0 => 1,
             Instruction::Iconst1 => 1,
