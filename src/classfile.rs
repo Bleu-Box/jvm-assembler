@@ -86,6 +86,8 @@ pub enum VerificationType {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Instruction {
+    Irem,               // 0x70
+    Frem,               // 0x72
     Fload0,             // 0x22
     Fload1,             // 0x23
     Fload2,             // 0x24
@@ -197,6 +199,8 @@ impl Method {
 impl Instruction {
     pub fn size(&self) -> u8 {
         match *self {
+            Instruction::Irem => 1,
+            Instruction::Frem => 1,
             Instruction::Fload0 => 1,
             Instruction::Fload1 => 1,
             Instruction::Fload2 => 1,

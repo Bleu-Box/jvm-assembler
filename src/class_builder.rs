@@ -163,6 +163,16 @@ impl<'a> MethodBuilder<'a> {
     pub fn i2c(&mut self) {
         self.push_instruction(Instruction::I2C);
     }
+
+    pub fn irem(&mut self) {
+        self.push_instruction(Instruction::Irem);
+        self.decrease_stack_depth();
+    }
+
+    pub fn frem(&mut self) {
+        self.push_instruction(Instruction::Frem);
+        self.decrease_stack_depth();
+    }
     
     pub fn iconstm1(&mut self) {
         self.push_instruction(Instruction::IconstM1);

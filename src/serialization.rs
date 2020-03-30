@@ -671,6 +671,12 @@ impl Serializable for VerificationType {
 impl Serializable for Instruction {
     fn serialize(self, buf: &mut Vec<u8>) {
         match self {
+            Instruction::Irem => {
+                (0x70 as u8).serialize(buf);
+            },
+            Instruction::Frem => {
+                (0x72 as u8).serialize(buf);
+            },
             Instruction::Fload0 => {
                 (0x22 as u8).serialize(buf);
             },
