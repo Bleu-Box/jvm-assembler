@@ -103,8 +103,8 @@ impl Serializable for f32 {
         // rust can convert the float into bits, but we
         // need to knock off the last space to make room
         // for the sign
-        let bits: u32 = (sign << 31) | (self.to_bits() >> 1);
-        bits.reverse_bits().serialize(buf);
+        let bits: u32 = self.to_bits(); //(sign << 31) | (self.to_bits() >> 1);
+        bits.serialize(buf);
     }
 
     fn deserialize(buf: &mut Deserializer, _classfile: &Classfile) -> f32 {
