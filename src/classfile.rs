@@ -129,10 +129,16 @@ pub enum Instruction {
     Iload3,             // 0x1d
     Iload(u8),          // 0x15
     LoadConstant(u8),   // 0x12
+    Astore0,            // 0x4b
+    Astore1,            // 0x4c
+    Astore2,            // 0x4d
+    Astore3,            // 0x4e
+    Astore(u8),         // 0x3a
     Aload0,             // 0x2A
     Aload1,             // 0x2B
     Aload2,             // 0x2C
     Aload3,             // 0x2D
+    Aload(u8),          // 0x19
     Aaload,             // 0x32
     Iadd,               // 0x60
     Isub,               // 0x64
@@ -248,10 +254,16 @@ impl Instruction {
             Instruction::Iload3 => 1,
             Instruction::Iload(_) => 2,
             Instruction::LoadConstant(_) => 2,
+            Instruction::Astore0 => 1,
+            Instruction::Astore1 => 1,
+            Instruction::Astore2 => 1,
+            Instruction::Astore3 => 1,
+            Instruction::Astore(_) => 2,
             Instruction::Aload0 => 1,
             Instruction::Aload1 => 1,
             Instruction::Aload2 => 1,
             Instruction::Aload3 => 1,
+            Instruction::Aload(_) => 2,
             Instruction::Aaload => 1,
             Instruction::Iadd => 1,
             Instruction::Isub => 1,

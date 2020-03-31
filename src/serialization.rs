@@ -808,6 +808,22 @@ impl Serializable for Instruction {
                 (0x12 as u8).serialize(buf);
                 index.serialize(buf);
             },
+            Instruction::Astore0 => {
+                (0x4b as u8).serialize(buf);
+            },
+            Instruction::Astore1 => {
+                (0x4c as u8).serialize(buf);
+            },
+            Instruction::Astore2 => {
+                (0x4d as u8).serialize(buf);
+            },
+            Instruction::Astore3 => {
+                (0x4e as u8).serialize(buf);
+            },
+            Instruction::Astore(n) => {
+                (0x3a as u8).serialize(buf);
+                n.serialize(buf);
+            },
             Instruction::Aload0 => {
                 (0x2A as u8).serialize(buf);
             },
@@ -819,6 +835,10 @@ impl Serializable for Instruction {
             },
             Instruction::Aload3 => {
                 (0x2D as u8).serialize(buf);
+            },
+            Instruction::Aload(n) => {
+                (0x19 as u8).serialize(buf);
+                n.serialize(buf);
             },
             Instruction::Aaload => {
                 (0x32 as u8).serialize(buf);

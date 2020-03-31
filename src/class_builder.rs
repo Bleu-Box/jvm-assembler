@@ -424,6 +424,35 @@ impl<'a> MethodBuilder<'a> {
         self.increase_stack_depth();
         //self.stack_types.push(VerificationType::Integer);
     }
+
+    pub fn astore0(&mut self) {
+        self.push_instruction(Instruction::Astore0);
+        self.increase_stack_depth();
+        // TODO: push to stack_types
+    }
+
+    pub fn astore1(&mut self) {
+        self.push_instruction(Instruction::Astore1);
+        self.increase_stack_depth();
+        // TODO: push to stack_types
+    }
+
+    pub fn astore2(&mut self) {
+        self.push_instruction(Instruction::Astore2);
+        self.increase_stack_depth();
+        // TODO: push to stack_types
+    }
+
+    pub fn astore3(&mut self) {
+        self.push_instruction(Instruction::Astore3);
+        self.increase_stack_depth();
+        // TODO: push to stack_types
+    }
+
+    pub fn astore(&mut self, reg: u8) {
+        self.push_instruction(Instruction::Astore(reg));
+        self.increase_stack_depth();
+    }
     
     pub fn aload0(&mut self) {
         self.push_instruction(Instruction::Aload0);
@@ -449,6 +478,11 @@ impl<'a> MethodBuilder<'a> {
         // TODO: push to stack_types
     }
 
+    pub fn aload(&mut self, reg: u8) {
+        self.push_instruction(Instruction::Aload(reg));
+        self.increase_stack_depth();
+    }
+    
     pub fn aaload(&mut self) {
         self.push_instruction(Instruction::Aaload);
         self.decrease_stack_depth();
