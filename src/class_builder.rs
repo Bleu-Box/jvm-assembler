@@ -593,6 +593,10 @@ impl<'a> MethodBuilder<'a> {
         self.push_instruction(Instruction::Return);
     }
 
+    pub fn areturn(&mut self) {
+        self.push_instruction(Instruction::Areturn);
+    }
+    
     pub fn get_static(&mut self, class: &str, name: &str, argument_type: &Java) {
         let fieldref_index = self.classfile.define_fieldref(class, name, argument_type);
         self.push_instruction(Instruction::GetStatic(fieldref_index));
