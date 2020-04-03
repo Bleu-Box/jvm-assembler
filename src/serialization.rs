@@ -808,6 +808,9 @@ impl Serializable for Instruction {
                 (0x12 as u8).serialize(buf);
                 index.serialize(buf);
             },
+            Instruction::AConstNull => {
+                (0x01 as u8).serialize(buf);
+            },
             Instruction::Areturn => {
                 (0xb0 as u8).serialize(buf);
             },

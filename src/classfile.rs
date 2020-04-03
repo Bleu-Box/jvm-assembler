@@ -129,6 +129,7 @@ pub enum Instruction {
     Iload3,             // 0x1d
     Iload(u8),          // 0x15
     LoadConstant(u8),   // 0x12
+    AConstNull,         // 0x01
     Areturn,            // 0xb0
     Astore0,            // 0x4b
     Astore1,            // 0x4c
@@ -255,6 +256,7 @@ impl Instruction {
             Instruction::Iload3 => 1,
             Instruction::Iload(_) => 2,
             Instruction::LoadConstant(_) => 2,
+            Instruction::AConstNull => 1,
             Instruction::Areturn => 1,
             Instruction::Astore0 => 1,
             Instruction::Astore1 => 1,

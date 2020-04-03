@@ -425,6 +425,11 @@ impl<'a> MethodBuilder<'a> {
         //self.stack_types.push(VerificationType::Integer);
     }
 
+    pub fn aconst_null(&mut self) {
+        self.push_instruction(Instruction::AConstNull);
+        self.increase_stack_depth();
+    }
+
     pub fn astore0(&mut self) {
         self.push_instruction(Instruction::Astore0);
         self.increase_stack_depth();
