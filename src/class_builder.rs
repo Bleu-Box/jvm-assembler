@@ -687,26 +687,28 @@ impl<'a> MethodBuilder<'a> {
     }
 
     fn increase_stack_depth(&mut self) {
-        self.curr_stack_depth += 1;
-        if self.curr_stack_depth > self.max_stack_depth {
-            self.max_stack_depth = self.curr_stack_depth;
-        }
+        // self.curr_stack_depth += 1;
+        // if self.curr_stack_depth > self.max_stack_depth {
+        //     self.max_stack_depth = self.curr_stack_depth;
+        // }
     }
 
     fn decrease_stack_depth(&mut self) {
-        self.curr_stack_depth -= 1;
-        self.stack_types.pop();
+        // if self.curr_stack_depth > 0 {
+        //     self.curr_stack_depth -= 1;
+        //     self.stack_types.pop();
+        // }
     }
 
     fn decrease_stack_depth_by(&mut self, n: u8) {
-        self.curr_stack_depth -= n as u16;
+        // self.curr_stack_depth -= n as u16;
         // TODO: pop from stack_types
     }
     
     pub fn done(self) {
-        if self.curr_stack_depth != 0 {
-            println!("Warning: stack depth at the end of a method should be 0, but is {} instead", self.curr_stack_depth);
-        }
+        // if self.curr_stack_depth != 0 {
+        //     println!("Warning: stack depth at the end of a method should be 0, but is {} instead", self.curr_stack_depth);
+        // }
 
         let classfile = self.classfile;
         let labels = self.labels;
