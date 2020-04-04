@@ -676,6 +676,9 @@ impl Serializable for Instruction {
                 b1.serialize(buf);
                 b2.serialize(buf);
             },
+            Instruction::Dup => {
+                (0x59 as u8).serialize(buf);
+            },
             Instruction::Irem => {
                 (0x70 as u8).serialize(buf);
             },

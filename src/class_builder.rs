@@ -169,6 +169,11 @@ impl<'a> MethodBuilder<'a> {
         self.increase_stack_depth();
     }
 
+    pub fn dup(&mut self) {
+        self.push_instruction(Instruction::Dup);
+        self.increase_stack_depth();
+    }
+
     pub fn i2c(&mut self) {
         self.push_instruction(Instruction::I2C);
     }

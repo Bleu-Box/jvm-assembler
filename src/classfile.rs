@@ -87,6 +87,7 @@ pub enum VerificationType {
 #[derive(Clone, Debug, PartialEq)]
 pub enum Instruction {
     New(u8, u8),        // 0xbb
+    Dup,                // 0x59
     Irem,               // 0x70
     Frem,               // 0x72
     Fmul,               // 0x6a
@@ -214,7 +215,8 @@ impl Method {
 impl Instruction {
     pub fn size(&self) -> u8 {
         match *self {
-            Instruction::New(_, _) => 2,
+            Instruction::New(_, _) => 3,
+            Instruction::Dup => 1,
             Instruction::Irem => 1,
             Instruction::Frem => 1,            
             Instruction::Fmul => 1,             
