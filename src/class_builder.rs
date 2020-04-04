@@ -159,6 +159,15 @@ impl<'a> MethodBuilder<'a> {
         self.env_num = self.new_env();
         self.env_num
     }
+    
+    pub fn nyew(&mut self, class_name: &str) {
+        let idx: u16 = self.classfile.define_class(class_name);
+        // the index needs to be split into two u8s (idx1 is the bigger half)
+        let idx1 = (idx >> 8) as u8;
+        let idx2 = (idx | 0xff) as u8;
+        self.push_instruction(Instruction::New(idx1, idx2));
+        self.increase_stack_depth();
+    }
 
     pub fn i2c(&mut self) {
         self.push_instruction(Instruction::I2C);
